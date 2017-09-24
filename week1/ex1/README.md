@@ -1,0 +1,1 @@
+The task was to compute the nearest & k-nearest neighbor on the MINST data set.
