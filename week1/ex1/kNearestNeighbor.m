@@ -12,14 +12,10 @@ disp("reading data");
 [training_images, training_labels] = loadMNISTdata('train-images.idx3-ubyte', 'train-labels.idx1-ubyte');
 [test_images, test_labels] = loadMNISTdata('t10k-images.idx3-ubyte', 't10k-labels.idx1-ubyte');
 
-% Set the test & training size from the input parameters
-trainingSize = nr_of_training_images;
-testSize = nr_of_test_images;
-
 % Executes the nearest neighbor algorithm on the test data set
 errors = 0;
 
-for i = 1:testSize
+for i = 1:nr_of_test_images
     
     fprintf('test %d - ', i);
     
@@ -42,7 +38,7 @@ for i = 1:testSize
     % vector of the k-smallest distances
     minDistArray = zeros(k,1);    
     
-    for j = 1:trainingSize
+    for j = 1:nr_of_training_images
         
         av = training_images(:,:,j);
         av = av(:);
