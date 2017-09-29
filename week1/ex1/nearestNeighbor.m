@@ -73,12 +73,12 @@ for i = 1:testSize
     end
     
     % If the guess was correct
-    fprintf('CORRECT MATCH | Test Label: %d, Training Label: %d | Curr Accuracy: %f\n', test_labels(i), result(i), currentAccuracy);
+    fprintf('MATCH | Test Label: %d, Training Label: %d | Curr Accuracy: %f\n', test_labels(i), result(i), currentAccuracy);
     
 end
 
 % Print out the accuracy after all calculations have been completed
-fprintf('Total Accuracy: %f.\n', currentAccuracy);
+fprintf('Total Accuracy: %f4 Error Rate: %f4 \n', currentAccuracy, (1-currentAccuracy));
     
     
         
