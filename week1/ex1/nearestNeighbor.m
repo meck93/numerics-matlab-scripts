@@ -21,7 +21,7 @@ errors = 0;
 
 for i = 1:testSize
     
-    fprintf('test %d - ', i);
+    fprintf('Test Case %d - ', i);
     
     % the first : means all rows
     % the second : means all columns

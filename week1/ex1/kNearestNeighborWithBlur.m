@@ -1,7 +1,7 @@
 % Numerical Methods in Informatics - HS 17 - Moritz Eck - Exercise 1 Task 1
 
 % Computes the k nearest neighbor algorithm
-function kNearestNeighbor(k, nr_of_test_images, nr_of_training_images)
+function kNearestNeighborWithBlur(k, nr_of_test_images, nr_of_training_images)
 
 disp("reading data");
 
@@ -22,10 +22,14 @@ for i = 1:nr_of_test_images
     % the first : means all rows
     % the second : means all columns
     % the third position means: the i-th page
-    tv = test_images(:,:,i);
+    test_image = test_images(:,:,i);
+    
+    % Apply the filter on the multi dimensional matrix tv / the train
+    % image using Sigma = 0.2
+    test_image = imgaussfilt(test_image, 0.2);
                      
     % Transpose the matrix into a 1-D vector with the (:) operation
-    tv = tv(:);
+    test_image = test_image(:);
   
     maxDist = Inf;
     maxDistIndex = 0; 
@@ -40,11 +44,11 @@ for i = 1:nr_of_test_images
     
     for j = 1:nr_of_training_images
         
-        av = training_images(:,:,j);
-        av = av(:);
+        train_image = training_images(:,:,j);
+        train_image = train_image(:);
         
         % Computes the difference between the two vectors
-        diff = tv - av;
+        diff = test_image - train_image;
         
         % Convert the image from 'unit8' to double
         diff = im2double(diff);
@@ -58,9 +62,7 @@ for i = 1:nr_of_test_images
             minIndexArray(j) = j;
             
             % Reevalute the max distance & its index of the minDistArray
-            [M, I] = max(minDistArray);
-            maxDist = M; 
-            maxDistIndex = I;
+            [maxDist, maxDistIndex] = max(minDistArray);
             
         % start comparing & find the shortest distance    
         else
@@ -73,25 +75,19 @@ for i = 1:nr_of_test_images
                 minIndexArray(maxDistIndex) = j;
                 
                 % Reevalute the max distance & its index of the minDistArray
-                [M, I] = max(minDistArray);
-                maxDist = M;
-                maxDistIndex = I;                
+                [maxDist, maxDistIndex] = max(minDistArray);             
             end
         end
     end
     
+    % Get all the labels of the k train images with the lowest euclidean
+    % difference to the test image.
     for l = 1:k
-        num(l) = training_labels(minIndexArray(l));
+        min_labels(l) = training_labels(minIndexArray(l));
     end
     
-    indices = zeros(10,1);
-    
-    for ii = 1:k
-        indices(num(ii)+1) = indices(num(ii)+1) + 1;
-    end
-    
-    [~, number] = max(indices);
-    result(i) = number - 1;
+    % The most occuring label
+    result(i) = mode(min_labels);
     
     % Check if estimate was accurate 
     % Accurate if the test label is equal to the result-label
@@ -106,12 +102,12 @@ for i = 1:nr_of_test_images
     
     % If the guess was not correct
     if (test_labels(i) ~= result(i))
-        fprintf('NO MATCH | Test Label: %d, Training Label: %d | Vote: %d | Curr Accuracy: %f\n', test_labels(i), result(i), number - 1, currentAccuracy);
+        fprintf('NO MATCH | Test Label: %d, Training Label: %d | Curr Accuracy: %f\n', test_labels(i), result(i), currentAccuracy);
         continue;
     end
     
     % If the guess was correct
-fprintf('MATCH | Test Label: %d, Training Label: %d | Vote: %d | Curr Accuracy: %f\n', test_labels(i), result(i), number - 1, currentAccuracy);
+fprintf('MATCH | Test Label: %d, Training Label: %d | Curr Accuracy: %f\n', test_labels(i), result(i), currentAccuracy);
     
 end
 
