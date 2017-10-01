@@ -5,10 +5,10 @@ close all
 % Fix the input size with the two parameters of the function 
 
 % Set the test size to use
-test_size = 50;
+test_size = 30;
 
 % Set the training size to use
-training_size = 10000;
+training_size = 1000;
 
 % Determine whether you want to use 
 % 1. K-nearest or nearest neighbor algorithm

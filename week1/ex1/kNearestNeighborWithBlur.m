@@ -15,6 +15,8 @@ disp("reading data");
 % Executes the nearest neighbor algorithm on the test data set
 errors = 0;
 
+h_filter = fspecial('gaussian',1,1);
+
 for i = 1:nr_of_test_images
     
     fprintf('Test Case %d - ', i);
@@ -26,8 +28,11 @@ for i = 1:nr_of_test_images
     
     % Apply the filter on the multi dimensional matrix tv / the train
     % image using Sigma = 0.2
-    test_image = imgaussfilt(test_image, 0.2);
-                     
+    % test_image = imgaussfilt(test_image, 0.2);
+      
+    % Apply the image filter
+    test_image = imfilter(test_image, h_filter, 'replicate');
+    
     % Transpose the matrix into a 1-D vector with the (:) operation
     test_image = test_image(:);
   
