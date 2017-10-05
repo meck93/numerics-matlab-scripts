@@ -22,10 +22,10 @@ for i = 1:nr_of_test_images
     % the first : means all rows
     % the second : means all columns
     % the third position means: the i-th page
-    tv = test_images(:,:,i);
-                     
+    test_image = test_images(:,:,i);
+    
     % Transpose the matrix into a 1-D vector with the (:) operation
-    tv = tv(:);
+    test_image = test_image(:);
   
     maxDist = Inf;
     maxDistIndex = 0; 
@@ -40,11 +40,11 @@ for i = 1:nr_of_test_images
     
     for j = 1:nr_of_training_images
         
-        av = training_images(:,:,j);
-        av = av(:);
+        train_image = training_images(:,:,j);
+        train_image = train_image(:);
         
         % Computes the difference between the two vectors
-        diff = tv - av;
+        diff = test_image - train_image;
         
         % Convert the image from 'unit8' to double
         diff = im2double(diff);
@@ -58,9 +58,7 @@ for i = 1:nr_of_test_images
             minIndexArray(j) = j;
             
             % Reevalute the max distance & its index of the minDistArray
-            [M, I] = max(minDistArray);
-            maxDist = M; 
-            maxDistIndex = I;
+            [maxDist, maxDistIndex] = max(minDistArray);
             
         % start comparing & find the shortest distance    
         else
@@ -73,9 +71,7 @@ for i = 1:nr_of_test_images
                 minIndexArray(maxDistIndex) = j;
                 
                 % Reevalute the max distance & its index of the minDistArray
-                [M, I] = max(minDistArray);
-                maxDist = M;
-                maxDistIndex = I;                
+                [maxDist, maxDistIndex] = max(minDistArray);             
             end
         end
     end
